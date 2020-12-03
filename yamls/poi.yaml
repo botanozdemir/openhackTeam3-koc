@@ -1,0 +1,34 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:  
+  labels:
+    app: trips
+  name: trips
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: trips
+  template:
+    metadata:      
+      labels:
+        app: trips
+    spec:
+      containers:
+      - image: registrygto0216.azurecr.io/trips:dev
+        name: trips
+---
+apiVersion: v1
+kind: Service
+metadata:  
+  labels:
+    app: trips
+  name: trips
+spec:
+  ports:
+  - port: 8080
+    protocol: TCP
+    targetPort: 8080
+  selector:
+    app: trips
+  type: NodePort

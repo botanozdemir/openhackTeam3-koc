@@ -1,0 +1,34 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: user-java
+  name: user-java
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: user-java
+  template:
+    metadata:
+      labels:
+        app: user-java
+    spec:
+      containers:
+      - image: registrygto0216.azurecr.io/user-java:latest
+        name: user-java
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: user-java
+  name: user-java
+spec:
+  ports:
+  - port: 8080
+    protocol: TCP
+    targetPort: 8080
+  selector:
+    app: user-java
+  type: NodePort
