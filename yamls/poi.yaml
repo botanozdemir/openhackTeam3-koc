@@ -2,33 +2,48 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:  
   labels:
-    app: trips
-  name: trips
+    app: poi
+  name: poi
+  namespace: api-dev 
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: trips
+      app: poi
   template:
     metadata:      
       labels:
-        app: trips
+        app: poi
     spec:
       containers:
-      - image: registrygto0216.azurecr.io/trips:dev
-        name: trips
+      - image: registrygto0216.azurecr.io/poi:dev
+        name: poi
+        ports:
+        - containerPort: 80
+        env:
+        - name: ASPNETCORE_ENVIRONMENT
+          value: "Development"
+        - name: WEB_PORT
+          value: "80"
+        - name: WEB_SERVER_BASE_URI
+          value: "http://10.0.138.22"
+        - name: BING_MAPS_KEY
+          value: "Asq3gtm-q1OZy3CKlYJiFOmBy25vvIqmnOmv1WhnauyfgxncltfaY_AAwW-7ZG-4"
+        envFrom:
+        - secretRef:
+            name: sql
 ---
 apiVersion: v1
 kind: Service
 metadata:  
   labels:
-    app: trips
-  name: trips
+    app: poi
+  name: poi
 spec:
   ports:
-  - port: 8080
+  - port: 80
     protocol: TCP
-    targetPort: 8080
+    targetPort: 80
   selector:
-    app: trips
-  type: NodePort
+    app: poi
+  

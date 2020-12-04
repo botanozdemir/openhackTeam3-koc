@@ -4,6 +4,7 @@ metadata:
   labels:
     app: userprofile
   name: userprofile
+  namespace: api-dev
 spec:
   replicas: 1
   selector:
@@ -17,7 +18,11 @@ spec:
       containers:
       - image: registrygto0216.azurecr.io/userprofile:dev
         name: userprofile
-        
+        ports:
+        - containerPort: 80
+        envFrom:
+        - secretRef:
+            name: sql
 ---
 apiVersion: v1
 kind: Service
@@ -32,4 +37,3 @@ spec:
     targetPort: 80
   selector:
     app: userprofile
-  type: NodePort

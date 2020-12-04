@@ -4,6 +4,7 @@ metadata:
   labels:
     app: user-java
   name: user-java
+  namespace: api-dev
 spec:
   replicas: 1
   selector:
@@ -17,6 +18,11 @@ spec:
       containers:
       - image: registrygto0216.azurecr.io/user-java:latest
         name: user-java
+        ports:
+        - containerPort: 80
+        envFrom:
+        - secretRef:
+            name: sql
 ---
 apiVersion: v1
 kind: Service
@@ -26,9 +32,8 @@ metadata:
   name: user-java
 spec:
   ports:
-  - port: 8080
+  - port: 80
     protocol: TCP
-    targetPort: 8080
+    targetPort: 80
   selector:
     app: user-java
-  type: NodePort

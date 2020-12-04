@@ -4,17 +4,29 @@ metadata:
   labels:
     app: tripviewer
   name: tripviewer
+  namespace: web-dev
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: tripviewer
-        labels:
+      app: tripviewer   
+  template:   
+    metadata:      
+      labels:
         app: tripviewer
     spec:
       containers:
       - image: registrygto0216.azurecr.io/tripviewer_hz:latest
         name: tripviewer
+        ports:
+        - containerPort: 80
+        env:
+        - name: TRIPS_API_ENDPOINT
+          value: "http://10.0.30.14/api/trips"
+        - name: USERPROFILE_API_ENDPOINT
+          value: "http://10.0.52.244/api/user"
+        - name: BING_MAPS_KEY
+          value: "Asq3gtm-q1OZy3CKlYJiFOmBy25vvIqmnOmv1WhnauyfgxncltfaY_AAwW-7ZG-4"
 ---
 apiVersion: v1
 kind: Service
@@ -24,9 +36,12 @@ metadata:
   name: tripviewer
 spec:
   ports:
-  - port: 8080
+  - port: 80
     protocol: TCP
-    targetPort: 8080
+    targetPort: 80
   selector:
     app: tripviewer
   type: LoadBalancer
+
+
+

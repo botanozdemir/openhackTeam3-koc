@@ -1,0 +1,26 @@
+kubectl apply -f poi.yaml
+kubectl apply -f trips.yaml
+kubectl apply -f user-java.yaml
+kubectl apply -f tripviewer.yaml
+kubectl apply -f userprofile.yaml
+
+kubectl apply -f secret.yaml
+kubectl apply -f role.yaml
+
+
+kubectl apply -f role-web.yaml
+
+kubectl apply -f rolebinding-web.yaml
+
+
+kubectl logs pod poi-7b965759dd-qmzsl -n api-dev
+
+kubectl describe pod poi-7b965759dd-qmzsl -n api-dev
+kubectl describe secret sql
+
+kubectl get pods -n api-dev
+
+
+az aks update -n openhackteam3 -g teamResources --attach-acr registrygto0216
+
+az aks update -g teamResources -n openhackteam3 --enable-aad --aad-admin-group-object-ids b875b299-d38d-4595-8dc4-65fa4d2670dd

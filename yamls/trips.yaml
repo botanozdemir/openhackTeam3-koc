@@ -4,6 +4,7 @@ metadata:
   labels:
     app: trips
   name: trips
+  namespace: api-dev
 spec:
   replicas: 1
   selector:
@@ -17,6 +18,22 @@ spec:
       containers:
       - image: registrygto0216.azurecr.io/trips:dev
         name: trips
+        ports:
+        - containerPort: 80
+        env:
+        - name: OPENAPI_UI_URI
+          value: "http://10.0.189.155/api/docs/trips"
+        - name: PORT
+          value: "80"
+        - name: DEBUG_LOGGING
+          value: "true"
+        - name: BING_MAPS_KEY
+          value: "Asq3gtm-q1OZy3CKlYJiFOmBy25vvIqmnOmv1WhnauyfgxncltfaY_AAwW-7ZG-4"
+        - name: ASPNETCORE_ENVIRONMENT
+          value: "Development"
+        envFrom:
+        - secretRef:
+            name: sql
 ---
 apiVersion: v1
 kind: Service
@@ -26,9 +43,8 @@ metadata:
   name: trips
 spec:
   ports:
-  - port: 8080
+  - port: 80
     protocol: TCP
-    targetPort: 8080
+    targetPort: 80
   selector:
     app: trips
-  type: NodePort
